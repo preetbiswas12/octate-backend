@@ -1,9 +1,7 @@
 services:
   - type: web
     name: octate-collaboration-backend
-    env: node
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    # Render will auto-detect and use Dockerfile
     plan: free
     envVars:
       - key: NODE_ENV
