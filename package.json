@@ -1,0 +1,55 @@
+{
+  "name": "octate-collaboration-backend",
+  "version": "1.0.0",
+  "description": "Backend for Octate multiplayer collaboration features using Supabase + Vercel",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run build && node dist/server.js",
+    "dev:vercel": "vercel dev",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "deploy": "vercel --prod",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:reset": "supabase db reset",
+    "supabase:generate-types": "supabase gen types typescript --local > lib/supabase-types.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.4",
+    "@vercel/node": "^3.0.12",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "fast-json-patch": "^3.1.1",
+    "ot": "^0.0.15",
+    "socket.io": "^4.7.4",
+    "socket.io-client": "^4.7.4",
+    "uuid": "^9.0.1",
+    "ws": "^8.14.2",
+    "y-websocket": "^1.5.0",
+    "yjs": "^13.6.10",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.15",
+    "@types/node": "^20.8.10",
+    "@types/uuid": "^9.0.6",
+    "@types/vscode": "^1.82.0",
+    "@types/ws": "^8.5.8",
+    "supabase": "^1.226.4",
+    "typescript": "^5.2.2",
+    "vercel": "^48.1.6"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "collaboration",
+    "multiplayer",
+    "real-time",
+    "supabase",
+    "vercel",
+    "websocket",
+    "vscode"
+  ],
+  "license": "MIT"
+}
