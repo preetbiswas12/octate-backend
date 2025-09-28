@@ -42,13 +42,11 @@ export const supabaseAdmin: SupabaseClient<Database> | null = supabaseServiceRol
 	: null;
 
 // Type exports for use throughout the application
-export type {
-	Database,
-	Tables,
-	TablesInsert,
-	TablesUpdate,
-	Enums,
-} from './supabase-types';
+export type { Database } from './supabase-types';
+
+// Helper type aliases for easier access
+export type Tables = Database['public']['Tables'];
+export type Enums = Database['public']['Enums'];
 
 // Helper types
 export type Room = Database['public']['Tables']['rooms']['Row'];
@@ -145,7 +143,7 @@ export function createRoomSubscription(
 				event: '*',
 				schema: 'public',
 				table: 'cursors',
-				filter: `participant_id=in.(select id from participants where room_id=eq.${roomId})`,
+				filter: `document_id=in.(select id from documents where room_id=eq.${roomId})`,
 			},
 			callback
 		)

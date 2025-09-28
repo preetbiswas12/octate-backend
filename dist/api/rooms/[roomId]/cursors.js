@@ -105,21 +105,22 @@ async function handleGetCursors(req, res, roomId) {
         .from('cursors')
         .select(`
       *,
-      participant:participants!inner(
+      participants!inner(
         id,
         display_name,
         color,
         presence_status,
-        user_id
+        user_id,
+        room_id
       ),
-      document:documents!inner(
+      documents!inner(
         id,
         file_path,
         room_id
       )
     `)
-        .eq('document.room_id', roomId)
-        .eq('participant.presence_status', 'online');
+        .eq('documents.room_id', roomId)
+        .eq('participants.presence_status', 'online');
     // Filter by document if specified
     if (documentId && typeof documentId === 'string') {
         query = query.eq('document_id', documentId);
@@ -130,7 +131,7 @@ async function handleGetCursors(req, res, roomId) {
         throw new APIError('Failed to fetch cursors', 500, 'DATABASE_ERROR');
     }
     // Transform the data to include participant info at the top level
-    const transformedCursors = cursors?.map(cursor => ({
+    const transformedCursors = cursors?.map((cursor) => ({
         id: cursor.id,
         line: cursor.line,
         column: cursor.column,
@@ -138,14 +139,14 @@ async function handleGetCursors(req, res, roomId) {
         selectionEnd: cursor.selection_end,
         updatedAt: cursor.updated_at,
         document: {
-            id: cursor.document.id,
-            filePath: cursor.document.file_path,
+            id: cursor.documents?.id,
+            filePath: cursor.documents?.file_path,
         },
         participant: {
-            id: cursor.participant.id,
-            displayName: cursor.participant.display_name,
-            color: cursor.participant.color,
-            userId: cursor.participant.user_id,
+            id: cursor.participants?.id,
+            displayName: cursor.participants?.display_name,
+            color: cursor.participants?.color,
+            userId: cursor.participants?.user_id,
         },
     }));
     return res.status(200).json({ cursors: transformedCursors });
@@ -183,7 +184,7 @@ async function handleUpdateCursor(req, res, roomId) {
     })
         .select(`
       *,
-      participant:participants!inner(
+      participants!inner(
         id,
         display_name,
         color,
@@ -224,10 +225,10 @@ async function handleUpdateCursor(req, res, roomId) {
         selectionEnd: cursor.selection_end,
         updatedAt: cursor.updated_at,
         participant: {
-            id: cursor.participant.id,
-            displayName: cursor.participant.display_name,
-            color: cursor.participant.color,
-            userId: cursor.participant.user_id,
+            id: cursor.participants?.id,
+            displayName: cursor.participants?.display_name,
+            color: cursor.participants?.color,
+            userId: cursor.participants?.user_id,
         },
     };
     return res.status(200).json({ cursor: transformedCursor });

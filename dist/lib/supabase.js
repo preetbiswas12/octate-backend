@@ -85,7 +85,7 @@ function createRoomSubscription(roomId, callback) {
         event: '*',
         schema: 'public',
         table: 'cursors',
-        filter: `participant_id=in.(select id from participants where room_id=eq.${roomId})`,
+        filter: `document_id=in.(select id from documents where room_id=eq.${roomId})`,
     }, callback)
         .on('postgres_changes', {
         event: '*',

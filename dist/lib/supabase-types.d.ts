@@ -4,102 +4,170 @@ export type Json = string | number | boolean | null | {
 export interface Database {
     public: {
         Tables: {
-            cursors: {
+            rooms: {
                 Row: {
-                    column: number;
-                    document_id: string;
                     id: string;
-                    line: number;
-                    metadata: Json;
-                    participant_id: string;
-                    selection_end: Json | null;
-                    selection_start: Json | null;
+                    name: string;
+                    description: string | null;
+                    status: "active" | "inactive" | "archived";
+                    owner_id: string | null;
+                    max_participants: number;
+                    created_at: string;
                     updated_at: string;
+                    expires_at: string | null;
+                    allow_anonymous: boolean;
+                    require_approval: boolean;
+                    metadata: Json;
                 };
                 Insert: {
-                    column?: number;
-                    document_id: string;
                     id?: string;
-                    line?: number;
-                    metadata?: Json;
-                    participant_id: string;
-                    selection_end?: Json | null;
-                    selection_start?: Json | null;
+                    name: string;
+                    description?: string | null;
+                    status?: "active" | "inactive" | "archived";
+                    owner_id?: string | null;
+                    max_participants?: number;
+                    created_at?: string;
                     updated_at?: string;
+                    expires_at?: string | null;
+                    allow_anonymous?: boolean;
+                    require_approval?: boolean;
+                    metadata?: Json;
                 };
                 Update: {
-                    column?: number;
-                    document_id?: string;
                     id?: string;
-                    line?: number;
-                    metadata?: Json;
-                    participant_id?: string;
-                    selection_end?: Json | null;
-                    selection_start?: Json | null;
+                    name?: string;
+                    description?: string | null;
+                    status?: "active" | "inactive" | "archived";
+                    owner_id?: string | null;
+                    max_participants?: number;
+                    created_at?: string;
                     updated_at?: string;
+                    expires_at?: string | null;
+                    allow_anonymous?: boolean;
+                    require_approval?: boolean;
+                    metadata?: Json;
                 };
                 Relationships: [
                     {
-                        foreignKeyName: "cursors_document_id_fkey";
-                        columns: ["document_id"];
-                        referencedRelation: "documents";
+                        foreignKeyName: "rooms_owner_id_fkey";
+                        columns: ["owner_id"];
+                        isOneToOne: false;
+                        referencedRelation: "users";
+                        referencedColumns: ["id"];
+                    }
+                ];
+            };
+            participants: {
+                Row: {
+                    id: string;
+                    room_id: string;
+                    user_id: string | null;
+                    role: "owner" | "editor" | "viewer";
+                    presence_status: "online" | "away" | "offline";
+                    display_name: string | null;
+                    avatar_url: string | null;
+                    color: string | null;
+                    last_seen: string;
+                    joined_at: string;
+                    cursor_position: Json | null;
+                    selection_range: Json | null;
+                    metadata: Json;
+                };
+                Insert: {
+                    id?: string;
+                    room_id: string;
+                    user_id?: string | null;
+                    role?: "owner" | "editor" | "viewer";
+                    presence_status?: "online" | "away" | "offline";
+                    display_name?: string | null;
+                    avatar_url?: string | null;
+                    color?: string | null;
+                    last_seen?: string;
+                    joined_at?: string;
+                    cursor_position?: Json | null;
+                    selection_range?: Json | null;
+                    metadata?: Json;
+                };
+                Update: {
+                    id?: string;
+                    room_id?: string;
+                    user_id?: string | null;
+                    role?: "owner" | "editor" | "viewer";
+                    presence_status?: "online" | "away" | "offline";
+                    display_name?: string | null;
+                    avatar_url?: string | null;
+                    color?: string | null;
+                    last_seen?: string;
+                    joined_at?: string;
+                    cursor_position?: Json | null;
+                    selection_range?: Json | null;
+                    metadata?: Json;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "participants_room_id_fkey";
+                        columns: ["room_id"];
+                        isOneToOne: false;
+                        referencedRelation: "rooms";
                         referencedColumns: ["id"];
                     },
                     {
-                        foreignKeyName: "cursors_participant_id_fkey";
-                        columns: ["participant_id"];
-                        referencedRelation: "participants";
+                        foreignKeyName: "participants_user_id_fkey";
+                        columns: ["user_id"];
+                        isOneToOne: false;
+                        referencedRelation: "users";
                         referencedColumns: ["id"];
                     }
                 ];
             };
             documents: {
                 Row: {
-                    content: string;
-                    created_at: string;
-                    file_path: string;
                     id: string;
-                    language: string | null;
-                    last_operation_timestamp: string;
-                    line_count: number;
-                    metadata: Json;
                     room_id: string;
-                    size_bytes: number;
-                    updated_at: string;
+                    file_path: string;
+                    content: string;
+                    language: string | null;
                     version: number;
+                    last_operation_timestamp: string;
+                    size_bytes: number;
+                    line_count: number;
+                    created_at: string;
+                    updated_at: string;
+                    metadata: Json;
                 };
                 Insert: {
-                    content?: string;
-                    created_at?: string;
-                    file_path: string;
                     id?: string;
-                    language?: string | null;
-                    last_operation_timestamp?: string;
-                    line_count?: number;
-                    metadata?: Json;
                     room_id: string;
-                    size_bytes?: number;
-                    updated_at?: string;
+                    file_path: string;
+                    content?: string;
+                    language?: string | null;
                     version?: number;
+                    last_operation_timestamp?: string;
+                    size_bytes?: number;
+                    line_count?: number;
+                    created_at?: string;
+                    updated_at?: string;
+                    metadata?: Json;
                 };
                 Update: {
-                    content?: string;
-                    created_at?: string;
-                    file_path?: string;
                     id?: string;
-                    language?: string | null;
-                    last_operation_timestamp?: string;
-                    line_count?: number;
-                    metadata?: Json;
                     room_id?: string;
-                    size_bytes?: number;
-                    updated_at?: string;
+                    file_path?: string;
+                    content?: string;
+                    language?: string | null;
                     version?: number;
+                    last_operation_timestamp?: string;
+                    size_bytes?: number;
+                    line_count?: number;
+                    created_at?: string;
+                    updated_at?: string;
+                    metadata?: Json;
                 };
                 Relationships: [
                     {
                         foreignKeyName: "documents_room_id_fkey";
                         columns: ["room_id"];
+                        isOneToOne: false;
                         referencedRelation: "rooms";
                         referencedColumns: ["id"];
                     }
@@ -107,244 +175,187 @@ export interface Database {
             };
             operations: {
                 Row: {
-                    applied_at: string;
+                    id: string;
+                    document_id: string;
+                    participant_id: string;
+                    operation_type: "insert" | "delete" | "retain" | "cursor_move" | "selection_change";
+                    position: number;
+                    length: number | null;
+                    content: string | null;
                     client_id: string;
                     client_sequence: number;
-                    content: string | null;
-                    document_id: string;
-                    id: string;
-                    length: number | null;
-                    metadata: Json;
-                    operation_type: Database["public"]["Enums"]["operation_type"];
-                    participant_id: string;
-                    position: number;
                     server_sequence: number;
-                    timestamp: string;
                     vector_clock: Json;
+                    timestamp: string;
+                    applied_at: string;
+                    metadata: Json;
                 };
                 Insert: {
-                    applied_at?: string;
+                    id?: string;
+                    document_id: string;
+                    participant_id: string;
+                    operation_type: "insert" | "delete" | "retain" | "cursor_move" | "selection_change";
+                    position: number;
+                    length?: number | null;
+                    content?: string | null;
                     client_id: string;
                     client_sequence: number;
-                    content?: string | null;
-                    document_id: string;
-                    id?: string;
-                    length?: number | null;
-                    metadata?: Json;
-                    operation_type: Database["public"]["Enums"]["operation_type"];
-                    participant_id: string;
-                    position: number;
                     server_sequence?: number;
-                    timestamp?: string;
                     vector_clock?: Json;
+                    timestamp?: string;
+                    applied_at?: string;
+                    metadata?: Json;
                 };
                 Update: {
-                    applied_at?: string;
+                    id?: string;
+                    document_id?: string;
+                    participant_id?: string;
+                    operation_type?: "insert" | "delete" | "retain" | "cursor_move" | "selection_change";
+                    position?: number;
+                    length?: number | null;
+                    content?: string | null;
                     client_id?: string;
                     client_sequence?: number;
-                    content?: string | null;
-                    document_id?: string;
-                    id?: string;
-                    length?: number | null;
-                    metadata?: Json;
-                    operation_type?: Database["public"]["Enums"]["operation_type"];
-                    participant_id?: string;
-                    position?: number;
                     server_sequence?: number;
-                    timestamp?: string;
                     vector_clock?: Json;
+                    timestamp?: string;
+                    applied_at?: string;
+                    metadata?: Json;
                 };
                 Relationships: [
                     {
                         foreignKeyName: "operations_document_id_fkey";
                         columns: ["document_id"];
+                        isOneToOne: false;
                         referencedRelation: "documents";
                         referencedColumns: ["id"];
                     },
                     {
                         foreignKeyName: "operations_participant_id_fkey";
                         columns: ["participant_id"];
+                        isOneToOne: false;
                         referencedRelation: "participants";
                         referencedColumns: ["id"];
                     }
                 ];
             };
-            participants: {
+            cursors: {
                 Row: {
-                    avatar_url: string | null;
-                    color: string | null;
-                    cursor_position: Json | null;
-                    display_name: string | null;
                     id: string;
-                    joined_at: string;
-                    last_seen: string;
+                    participant_id: string;
+                    document_id: string;
+                    line: number;
+                    column: number;
+                    selection_start: Json | null;
+                    selection_end: Json | null;
+                    updated_at: string;
                     metadata: Json;
-                    presence_status: Database["public"]["Enums"]["presence_status"];
-                    role: Database["public"]["Enums"]["participant_role"];
-                    room_id: string;
-                    selection_range: Json | null;
-                    user_id: string | null;
                 };
                 Insert: {
-                    avatar_url?: string | null;
-                    color?: string | null;
-                    cursor_position?: Json | null;
-                    display_name?: string | null;
                     id?: string;
-                    joined_at?: string;
-                    last_seen?: string;
+                    participant_id: string;
+                    document_id: string;
+                    line?: number;
+                    column?: number;
+                    selection_start?: Json | null;
+                    selection_end?: Json | null;
+                    updated_at?: string;
                     metadata?: Json;
-                    presence_status?: Database["public"]["Enums"]["presence_status"];
-                    role?: Database["public"]["Enums"]["participant_role"];
-                    room_id: string;
-                    selection_range?: Json | null;
-                    user_id?: string | null;
                 };
                 Update: {
-                    avatar_url?: string | null;
-                    color?: string | null;
-                    cursor_position?: Json | null;
-                    display_name?: string | null;
                     id?: string;
-                    joined_at?: string;
-                    last_seen?: string;
+                    participant_id?: string;
+                    document_id?: string;
+                    line?: number;
+                    column?: number;
+                    selection_start?: Json | null;
+                    selection_end?: Json | null;
+                    updated_at?: string;
                     metadata?: Json;
-                    presence_status?: Database["public"]["Enums"]["presence_status"];
-                    role?: Database["public"]["Enums"]["participant_role"];
-                    room_id?: string;
-                    selection_range?: Json | null;
-                    user_id?: string | null;
                 };
                 Relationships: [
                     {
-                        foreignKeyName: "participants_room_id_fkey";
-                        columns: ["room_id"];
-                        referencedRelation: "rooms";
+                        foreignKeyName: "cursors_participant_id_fkey";
+                        columns: ["participant_id"];
+                        isOneToOne: false;
+                        referencedRelation: "participants";
                         referencedColumns: ["id"];
                     },
                     {
-                        foreignKeyName: "participants_user_id_fkey";
-                        columns: ["user_id"];
-                        referencedRelation: "users";
+                        foreignKeyName: "cursors_document_id_fkey";
+                        columns: ["document_id"];
+                        isOneToOne: false;
+                        referencedRelation: "documents";
                         referencedColumns: ["id"];
                     }
                 ];
             };
             presence: {
                 Row: {
-                    activity_type: string | null;
-                    connected_at: string;
-                    connection_id: string | null;
-                    current_document_id: string | null;
                     id: string;
-                    ip_address: unknown | null;
-                    last_activity: string;
-                    metadata: Json;
                     participant_id: string;
                     room_id: string;
-                    status: Database["public"]["Enums"]["presence_status"];
-                    updated_at: string;
+                    status: "online" | "away" | "offline";
+                    last_activity: string;
+                    current_document_id: string | null;
+                    activity_type: string | null;
+                    connection_id: string | null;
                     user_agent: string | null;
+                    ip_address: string | null;
+                    connected_at: string;
+                    updated_at: string;
+                    metadata: Json;
                 };
                 Insert: {
-                    activity_type?: string | null;
-                    connected_at?: string;
-                    connection_id?: string | null;
-                    current_document_id?: string | null;
                     id?: string;
-                    ip_address?: unknown | null;
-                    last_activity?: string;
-                    metadata?: Json;
                     participant_id: string;
                     room_id: string;
-                    status?: Database["public"]["Enums"]["presence_status"];
-                    updated_at?: string;
+                    status?: "online" | "away" | "offline";
+                    last_activity?: string;
+                    current_document_id?: string | null;
+                    activity_type?: string | null;
+                    connection_id?: string | null;
                     user_agent?: string | null;
+                    ip_address?: string | null;
+                    connected_at?: string;
+                    updated_at?: string;
+                    metadata?: Json;
                 };
                 Update: {
-                    activity_type?: string | null;
-                    connected_at?: string;
-                    connection_id?: string | null;
-                    current_document_id?: string | null;
                     id?: string;
-                    ip_address?: unknown | null;
-                    last_activity?: string;
-                    metadata?: Json;
                     participant_id?: string;
                     room_id?: string;
-                    status?: Database["public"]["Enums"]["presence_status"];
-                    updated_at?: string;
+                    status?: "online" | "away" | "offline";
+                    last_activity?: string;
+                    current_document_id?: string | null;
+                    activity_type?: string | null;
+                    connection_id?: string | null;
                     user_agent?: string | null;
+                    ip_address?: string | null;
+                    connected_at?: string;
+                    updated_at?: string;
+                    metadata?: Json;
                 };
                 Relationships: [
                     {
-                        foreignKeyName: "presence_current_document_id_fkey";
-                        columns: ["current_document_id"];
-                        referencedRelation: "documents";
-                        referencedColumns: ["id"];
-                    },
-                    {
                         foreignKeyName: "presence_participant_id_fkey";
                         columns: ["participant_id"];
+                        isOneToOne: false;
                         referencedRelation: "participants";
                         referencedColumns: ["id"];
                     },
                     {
                         foreignKeyName: "presence_room_id_fkey";
                         columns: ["room_id"];
+                        isOneToOne: false;
                         referencedRelation: "rooms";
                         referencedColumns: ["id"];
-                    }
-                ];
-            };
-            rooms: {
-                Row: {
-                    allow_anonymous: boolean;
-                    created_at: string;
-                    description: string | null;
-                    expires_at: string | null;
-                    id: string;
-                    max_participants: number;
-                    metadata: Json;
-                    name: string;
-                    owner_id: string | null;
-                    require_approval: boolean;
-                    status: Database["public"]["Enums"]["room_status"];
-                    updated_at: string;
-                };
-                Insert: {
-                    allow_anonymous?: boolean;
-                    created_at?: string;
-                    description?: string | null;
-                    expires_at?: string | null;
-                    id?: string;
-                    max_participants?: number;
-                    metadata?: Json;
-                    name: string;
-                    owner_id?: string | null;
-                    require_approval?: boolean;
-                    status?: Database["public"]["Enums"]["room_status"];
-                    updated_at?: string;
-                };
-                Update: {
-                    allow_anonymous?: boolean;
-                    created_at?: string;
-                    description?: string | null;
-                    expires_at?: string | null;
-                    id?: string;
-                    max_participants?: number;
-                    metadata?: Json;
-                    name?: string;
-                    owner_id?: string | null;
-                    require_approval?: boolean;
-                    status?: Database["public"]["Enums"]["room_status"];
-                    updated_at?: string;
-                };
-                Relationships: [
+                    },
                     {
-                        foreignKeyName: "rooms_owner_id_fkey";
-                        columns: ["owner_id"];
-                        referencedRelation: "users";
+                        foreignKeyName: "presence_current_document_id_fkey";
+                        columns: ["current_document_id"];
+                        isOneToOne: false;
+                        referencedRelation: "documents";
                         referencedColumns: ["id"];
                     }
                 ];
@@ -354,25 +365,30 @@ export interface Database {
             [_ in never]: never;
         };
         Functions: {
-            apply_operation: {
-                Args: {
-                    p_document_id: string;
-                    p_participant_id: string;
-                    p_operation_type: Database["public"]["Enums"]["operation_type"];
-                    p_position: number;
-                    p_length?: number;
-                    p_content?: string;
-                    p_client_id?: string;
-                    p_client_sequence?: number;
-                };
-                Returns: string;
-            };
             cleanup_expired_rooms: {
                 Args: {};
                 Returns: number;
             };
-            generate_participant_color: {
-                Args: {};
+            update_participant_presence: {
+                Args: {
+                    p_participant_id: string;
+                    p_status?: "online" | "away" | "offline";
+                    p_document_id?: string | null;
+                    p_activity_type?: string | null;
+                };
+                Returns: undefined;
+            };
+            apply_operation: {
+                Args: {
+                    p_document_id: string;
+                    p_participant_id: string;
+                    p_operation_type: "insert" | "delete" | "retain" | "cursor_move" | "selection_change";
+                    p_position: number;
+                    p_length?: number | null;
+                    p_content?: string | null;
+                    p_client_id?: string | null;
+                    p_client_sequence?: number;
+                };
                 Returns: string;
             };
             update_cursor_position: {
@@ -381,70 +397,87 @@ export interface Database {
                     p_document_id: string;
                     p_line: number;
                     p_column: number;
-                    p_selection_start?: Json;
-                    p_selection_end?: Json;
+                    p_selection_start?: Json | null;
+                    p_selection_end?: Json | null;
                 };
                 Returns: undefined;
             };
-            update_participant_presence: {
-                Args: {
-                    p_participant_id: string;
-                    p_status?: Database["public"]["Enums"]["presence_status"];
-                    p_document_id?: string;
-                    p_activity_type?: string;
-                };
-                Returns: undefined;
+            generate_participant_color: {
+                Args: {};
+                Returns: string;
             };
         };
         Enums: {
-            operation_type: "insert" | "delete" | "retain" | "cursor_move" | "selection_change";
+            room_status: "active" | "inactive" | "archived";
             participant_role: "owner" | "editor" | "viewer";
             presence_status: "online" | "away" | "offline";
-            room_status: "active" | "inactive" | "archived";
+            operation_type: "insert" | "delete" | "retain" | "cursor_move" | "selection_change";
         };
         CompositeTypes: {
             [_ in never]: never;
         };
     };
 }
-export type Tables<PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] & Database["public"]["Views"]) | {
+export type Tables<PublicTableNameOrOptions extends keyof (Database["public"]["Tables"]) | {
     schema: keyof Database;
 }, TableName extends PublicTableNameOrOptions extends {
     schema: keyof Database;
-} ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] & Database[PublicTableNameOrOptions["schema"]]["Views"]) : never = never> = PublicTableNameOrOptions extends {
+} ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"]) : never = never> = PublicTableNameOrOptions extends {
     schema: keyof Database;
-} ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] & Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+} ? (Database[PublicTableNameOrOptions["schema"]]["Tables"])[TableName] extends {
     Row: infer R;
-} ? R : never : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] & Database["public"]["Views"]) ? (Database["public"]["Tables"] & Database["public"]["Views"])[PublicTableNameOrOptions] extends {
+} ? R : never : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"]) ? (Database["public"]["Tables"])[PublicTableNameOrOptions] extends {
     Row: infer R;
 } ? R : never : never;
-export type TablesInsert<PublicTableNameOrOptions extends keyof Database["public"]["Tables"] | {
+export type TablesInsert<PublicTableNameOrOptions extends keyof (Database["public"]["Tables"]) | {
     schema: keyof Database;
 }, TableName extends PublicTableNameOrOptions extends {
     schema: keyof Database;
-} ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"] : never = never> = PublicTableNameOrOptions extends {
+} ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"]) : never = never> = PublicTableNameOrOptions extends {
     schema: keyof Database;
-} ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+} ? (Database[PublicTableNameOrOptions["schema"]]["Tables"])[TableName] extends {
     Insert: infer I;
-} ? I : never : PublicTableNameOrOptions extends keyof Database["public"]["Tables"] ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
+} ? I : never : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"]) ? (Database["public"]["Tables"])[PublicTableNameOrOptions] extends {
     Insert: infer I;
 } ? I : never : never;
-export type TablesUpdate<PublicTableNameOrOptions extends keyof Database["public"]["Tables"] | {
+export type TablesUpdate<PublicTableNameOrOptions extends keyof (Database["public"]["Tables"]) | {
     schema: keyof Database;
 }, TableName extends PublicTableNameOrOptions extends {
     schema: keyof Database;
-} ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"] : never = never> = PublicTableNameOrOptions extends {
+} ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"]) : never = never> = PublicTableNameOrOptions extends {
     schema: keyof Database;
-} ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+} ? (Database[PublicTableNameOrOptions["schema"]]["Tables"])[TableName] extends {
     Update: infer U;
-} ? U : never : PublicTableNameOrOptions extends keyof Database["public"]["Tables"] ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
+} ? U : never : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"]) ? (Database["public"]["Tables"])[PublicTableNameOrOptions] extends {
     Update: infer U;
 } ? U : never : never;
-export type Enums<PublicEnumNameOrOptions extends keyof Database["public"]["Enums"] | {
+export type Enums<PublicEnumNameOrOptions extends keyof (Database["public"]["Enums"]) | {
     schema: keyof Database;
 }, EnumName extends PublicEnumNameOrOptions extends {
     schema: keyof Database;
-} ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"] : never = never> = PublicEnumNameOrOptions extends {
+} ? keyof (Database[PublicEnumNameOrOptions["schema"]]["Enums"]) : never = never> = PublicEnumNameOrOptions extends {
     schema: keyof Database;
-} ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName] : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"] ? Database["public"]["Enums"][PublicEnumNameOrOptions] : never;
+} ? (Database[PublicEnumNameOrOptions["schema"]]["Enums"])[EnumName] : PublicEnumNameOrOptions extends keyof (Database["public"]["Enums"]) ? (Database["public"]["Enums"])[PublicEnumNameOrOptions] : never;
+export type Room = Tables<'rooms'>;
+export type RoomInsert = TablesInsert<'rooms'>;
+export type RoomUpdate = TablesUpdate<'rooms'>;
+export type Participant = Tables<'participants'>;
+export type ParticipantInsert = TablesInsert<'participants'>;
+export type ParticipantUpdate = TablesUpdate<'participants'>;
+export type Document = Tables<'documents'>;
+export type DocumentInsert = TablesInsert<'documents'>;
+export type DocumentUpdate = TablesUpdate<'documents'>;
+export type Operation = Tables<'operations'>;
+export type OperationInsert = TablesInsert<'operations'>;
+export type OperationUpdate = TablesUpdate<'operations'>;
+export type Cursor = Tables<'cursors'>;
+export type CursorInsert = TablesInsert<'cursors'>;
+export type CursorUpdate = TablesUpdate<'cursors'>;
+export type Presence = Tables<'presence'>;
+export type PresenceInsert = TablesInsert<'presence'>;
+export type PresenceUpdate = TablesUpdate<'presence'>;
+export type RoomStatus = Enums<'room_status'>;
+export type ParticipantRole = Enums<'participant_role'>;
+export type PresenceStatus = Enums<'presence_status'>;
+export type OperationType = Enums<'operation_type'>;
 //# sourceMappingURL=supabase-types.d.ts.map
