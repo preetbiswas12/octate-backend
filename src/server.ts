@@ -5,6 +5,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { checkSupabaseConnection } from '../lib/supabase';
+import { initializeDatabase } from '../lib/database-init';
 
 // Load environment variables
 dotenv.config();
@@ -146,11 +147,43 @@ app.use('*', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => {
-	console.log(`🚀 Octate collaboration backend running on port ${PORT}`);
+// Initialize server with database connection check
+async function startServer() {
+	console.log(`🚀 Starting Octate collaboration backend...`);
 	console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
-	console.log(`📡 WebSocket server ready for real-time collaboration`);
-});
+	
+	// Check database connection on startup
+	const dbConnected = await checkSupabaseConnection();
+	if (!dbConnected) {
+		console.error('❌ Failed to connect to Supabase database');
+		console.error('📋 Please check your environment variables:');
+		console.error(`   SUPABASE_URL: ${process.env.SUPABASE_URL ? '✅ Set' : '❌ Missing'}`);
+		console.error(`   SUPABASE_ANON_KEY: ${process.env.SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing'}`);
+		console.error(`   SUPABASE_SERVICE_ROLE_KEY: ${process.env.SUPABASE_SERVICE_ROLE_KEY ? '✅ Set' : '❌ Missing'}`);
+		
+		console.log('⚠️  Server will start but database features will not work');
+	} else {
+		console.log('✅ Supabase database connection verified');
+		
+		// Initialize database schema
+		const dbInitialized = await initializeDatabase();
+		if (!dbInitialized) {
+			console.error('❌ Database initialization failed');
+			console.log('⚠️  Server will start but some features may not work properly');
+		}
+	}
+	
+	server.listen(PORT, () => {
+		console.log(`🚀 Octate collaboration backend running on port ${PORT}`);
+		console.log(`📡 WebSocket server ready for real-time collaboration`);
+		console.log(`🔗 Health check: http://localhost:${PORT}/health`);
+		if (process.env.NODE_ENV === 'production') {
+			console.log(`🌐 Production URL: https://octate-backend.onrender.com`);
+		}
+	});
+}
+
+startServer().catch(console.error);
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

@@ -5,6 +5,7 @@ This guide provides step-by-step instructions for deploying the Octate collabora
 ## Overview
 
 The backend has been migrated from Vercel serverless functions to a persistent Express.js server architecture, optimized for:
+
 - **Real-time WebSocket connections** with Socket.IO
 - **Better performance** with persistent connections (no cold starts)
 - **Cost-effective hosting** on Render's free tier
@@ -13,12 +14,14 @@ The backend has been migrated from Vercel serverless functions to a persistent E
 ## Architecture Changes
 
 ### Before (Vercel Serverless)
+
 - Individual API functions (`/api/rooms`, `/api/documents`)
 - Cold start latency
 - Limited WebSocket support
 - Pay-per-request model
 
 ### After (Render Express.js)
+
 - Single persistent server with Express.js
 - Always-on connections
 - Native Socket.IO support
@@ -36,6 +39,7 @@ The backend has been migrated from Vercel serverless functions to a persistent E
 ### 1. Prepare Supabase Database
 
 Ensure your Supabase project has these tables:
+
 - `rooms`
 - `participants`
 - `documents`
@@ -57,7 +61,8 @@ Run the SQL schema from `supabase/migrations/` if not already done.
    - Select the repository containing the collaboration-backend
 
 3. **Configure Environment Variables**:
-   ```
+
+   ```env
    NODE_ENV=production
    SUPABASE_URL=your-supabase-project-url
    SUPABASE_ANON_KEY=your-supabase-anon-key
@@ -92,10 +97,12 @@ Run the SQL schema from `supabase/migrations/` if not already done.
 ### 4. Update Octate Configuration
 
 The configuration has been updated to use:
+
 - Production: `https://octate-api.onrender.com`
 - WebSocket: `wss://octate-api.onrender.com`
 
 If using a custom domain, update `octateConfig.ts`:
+
 ```typescript
 collaborationBackendUrl: 'https://api.your-domain.com'
 websocketUrl: 'wss://api.your-domain.com'
@@ -123,11 +130,13 @@ websocketUrl: 'wss://api.your-domain.com'
 ## Health Monitoring
 
 The server includes a health check endpoint:
+
 - **URL**: `/health`
 - **Response**: JSON with status and database connectivity
 - **Use**: Monitor service health and database connection
 
 Example response:
+
 ```json
 {
   "status": "ok",
@@ -139,11 +148,13 @@ Example response:
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/validate` - Validate JWT token
 - `GET /api/auth/me` - Get current user
 - `POST /api/auth/refresh` - Refresh session
 
 ### Rooms
+
 - `GET /api/rooms` - List user's rooms
 - `POST /api/rooms` - Create new room
 - `GET /api/rooms/:id` - Get room details
@@ -153,6 +164,7 @@ Example response:
 - `POST /api/rooms/:id/leave` - Leave room
 
 ### Documents
+
 - `GET /api/documents` - List documents
 - `POST /api/documents` - Create document
 - `GET /api/documents/:id` - Get document
@@ -162,6 +174,7 @@ Example response:
 - `GET /api/documents/:id/cursors` - Get cursors
 
 ### WebSocket Events
+
 - `join-room` - Join collaboration room
 - `leave-room` - Leave collaboration room
 - `operation` - Send text operation
@@ -203,6 +216,7 @@ Example response:
    - Check database connectivity status
 
 3. **Local Development**:
+
    ```bash
    cd collaboration-backend
    npm install
@@ -212,11 +226,13 @@ Example response:
 ## Performance Considerations
 
 ### Render Free Tier Limitations
+
 - **Sleep after 15 minutes** of inactivity
 - **750 hours/month** runtime limit
 - **100GB bandwidth/month**
 
 ### Optimization Tips
+
 1. **Keep connections active** with ping/pong
 2. **Use connection pooling** for database
 3. **Implement caching** for frequently accessed data
@@ -225,10 +241,12 @@ Example response:
 ## Scaling and Production
 
 ### Upgrading to Paid Plans
+
 - **Starter Plan**: $7/month, no sleep, custom domains
 - **Standard Plan**: $25/month, more resources, auto-scaling
 
 ### Production Considerations
+
 1. **Database Connection Pooling**: Implement for high concurrency
 2. **Rate Limiting**: Add middleware to prevent abuse
 3. **Monitoring**: Set up error tracking (Sentry, LogRocket)
@@ -238,6 +256,7 @@ Example response:
 ## Support
 
 For deployment issues:
+
 1. Check Render [documentation](https://render.com/docs)
 2. Review Supabase [guides](https://supabase.com/docs)
 3. Open GitHub issue for application-specific problems

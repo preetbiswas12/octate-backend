@@ -3,18 +3,21 @@
 ## Step 1: Deploy Backend to Vercel
 
 ### 1.1 Deploy the collaboration-backend folder only
+
 ```bash
 cd collaboration-backend
 vercel --prod
 ```
 
 ### 1.2 Note your deployment URL
+
 After deployment, you'll get a URL like: `https://octate-collaboration-backend.vercel.app`
 
 ### 1.3 Set Environment Variables in Vercel
+
 Go to Vercel Dashboard → Your Project → Settings → Environment Variables:
 
-```
+```env
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
@@ -25,6 +28,7 @@ ALLOWED_ORIGINS=vscode://,https://localhost:3000
 ## Step 2: Update VS Code Extension Configuration
 
 ### 2.1 Update lib/config.ts with your deployment URL
+
 Replace the placeholder URLs with your actual Vercel deployment URL:
 
 ```typescript
@@ -37,6 +41,7 @@ socketUrl: isDevelopment
 ```
 
 ### 2.2 Create package.json for VS Code Extension
+
 In your main vscode folder, create an extension package.json:
 
 ```json
@@ -92,6 +97,7 @@ In your main vscode folder, create an extension package.json:
 ## Step 3: Create Extension Entry Point
 
 ### 3.1 Create extension.ts in your vscode root
+
 ```typescript
 import * as vscode from 'vscode';
 import { CollaborationService } from './collaboration-backend/lib/collaboration-service';
@@ -142,6 +148,7 @@ export function deactivate() {
 ## Step 4: Test the Connection
 
 ### 4.1 Test API Endpoints
+
 After deployment, test your API:
 
 ```bash
@@ -161,6 +168,7 @@ curl https://YOUR-VERCEL-URL.vercel.app/api/health
 ```
 
 ### 4.2 Test in VS Code
+
 1. Open VS Code
 2. Press `Ctrl+Shift+P` (Command Palette)
 3. Type "Octate" to see your commands
@@ -169,11 +177,13 @@ curl https://YOUR-VERCEL-URL.vercel.app/api/health
 ## Step 5: Package and Distribute
 
 ### 5.1 Install VS Code Extension Manager
+
 ```bash
 npm install -g @vscode/vsce
 ```
 
 ### 5.2 Package your extension
+
 ```bash
 vsce package
 ```
@@ -190,6 +200,7 @@ This creates a `.vsix` file you can install or distribute.
 ## 🛠️ Configuration
 
 Users can configure the backend URL in VS Code settings:
+
 - `File` → `Preferences` → `Settings`
 - Search for "Octate"
 - Set the backend URL to your Vercel deployment
@@ -197,6 +208,7 @@ Users can configure the backend URL in VS Code settings:
 ## 📊 Monitoring
 
 Your Vercel deployment will provide:
+
 - Real-time logs
 - Performance metrics
 - Error tracking

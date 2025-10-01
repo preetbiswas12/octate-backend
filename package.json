@@ -12,7 +12,10 @@
     "supabase:start": "supabase start",
     "supabase:stop": "supabase stop",
     "supabase:reset": "supabase db reset",
-    "supabase:generate-types": "supabase gen types typescript --local > lib/supabase-types.ts"
+    "supabase:generate-types": "supabase gen types typescript --local > lib/supabase-types.ts",
+    "db:init": "tsx scripts/init-database.ts",
+    "test:connection": "tsx scripts/test-connection.ts",
+    "deploy:backend": "npm run build && npm run render:deploy"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.38.4",

@@ -97,6 +97,10 @@ CREATE TABLE documents (
     CONSTRAINT documents_version_check CHECK (version >= 1)
 );
 
+-- Create sequence for server-side operation ordering
+CREATE SEQUENCE operations_server_seq START 1;
+
+
 -- Operational Transform Operations
 -- Each operation represents a change to a document
 CREATE TABLE operations (
@@ -132,8 +136,7 @@ CREATE TABLE operations (
     CONSTRAINT operations_server_sequence_check CHECK (server_sequence >= 0)
 );
 
--- Create sequence for server-side operation ordering
-CREATE SEQUENCE operations_server_seq START 1;
+
 
 -- Cursor positions and selections (separate table for real-time updates)
 CREATE TABLE cursors (
@@ -143,7 +146,7 @@ CREATE TABLE cursors (
 
     -- Cursor position
     line INTEGER NOT NULL DEFAULT 0,
-    column INTEGER NOT NULL DEFAULT 0,
+    "column" INTEGER NOT NULL DEFAULT 0,
 
     -- Selection range (if any)
     selection_start JSONB, -- {line: number, column: number}
@@ -160,7 +163,7 @@ CREATE TABLE cursors (
 
     -- Check constraints
     CONSTRAINT cursors_line_check CHECK (line >= 0),
-    CONSTRAINT cursors_column_check CHECK (column >= 0)
+    CONSTRAINT cursors_column_check CHECK ("column" >= 0)
 );
 
 -- Real-time presence tracking
@@ -488,7 +491,7 @@ CREATE OR REPLACE FUNCTION update_cursor_position(
 RETURNS VOID AS $$
 BEGIN
     INSERT INTO cursors (
-        participant_id, document_id, line, column,
+        participant_id, document_id, line, "column",
         selection_start, selection_end
     ) VALUES (
         p_participant_id, p_document_id, p_line, p_column,
@@ -497,7 +500,7 @@ BEGIN
     ON CONFLICT (participant_id, document_id)
     DO UPDATE SET
         line = p_line,
-        column = p_column,
+        "column" = p_column,
         selection_start = p_selection_start,
         selection_end = p_selection_end,
         updated_at = NOW();

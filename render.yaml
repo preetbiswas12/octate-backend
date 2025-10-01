@@ -1,6 +1,7 @@
 services:
   - type: web
     name: octate-collaboration-backend
+    runtime: node
     # Render will auto-detect and use Dockerfile
     plan: free
     envVars:
@@ -14,13 +15,13 @@ services:
       - key: FRONTEND_URL
         value: https://octate.dev
       - key: SUPABASE_URL
-        sync: false
+        value: https://diijislhtmsbtvwecfdr.supabase.co
       - key: SUPABASE_ANON_KEY
-        sync: false
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpaWppc2xodG1zYnR2d2VjZmRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNTc5MzksImV4cCI6MjA3NDYzMzkzOX0.6hTg0iaLhp6Ig-FSkJVjQ6jPxoGzrOTr9pyvgyWngwc
       - key: SUPABASE_SERVICE_ROLE_KEY
-        sync: false
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpaWppc2xodG1zYnR2d2VjZmRyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTA1NzkzOSwiZXhwIjoyMDc0NjMzOTM5fQ.gJEH_1pkQrJ1YLGZjd-zuwLQN1NFTbVcuriL3PZmtRo
       - key: JWT_SECRET
-        sync: false
+        value: octate-super-secret-jwt-key-for-production-use-32-chars-minimum
     healthCheckPath: /health
     domains:
-      - octate-api.onrender.com
+      - octate-backend.onrender.com

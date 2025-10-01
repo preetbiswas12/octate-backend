@@ -1,5 +1,9 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Database } from './supabase-types';
+import * as dotenv from 'dotenv';
+
+// Load environment variables first
+dotenv.config();
 
 // Environment variables
 const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -108,12 +112,27 @@ export class SupabaseError extends Error {
 // Connection health check
 export async function checkSupabaseConnection(): Promise<boolean> {
 	try {
+		console.log('Testing Supabase connection to:', supabaseUrl);
+		
+		// First check if environment variables are set
+		if (!supabaseUrl || !supabaseAnonKey) {
+			console.error('Missing Supabase environment variables');
+			return false;
+		}
+		
+		// Try a simple query to test connection
 		const { data, error } = await supabase
 			.from('rooms')
 			.select('id')
 			.limit(1);
 
-		return !error;
+		if (error) {
+			console.error('Supabase query error:', error.message, error.details, error.hint);
+			return false;
+		}
+		
+		console.log('Supabase connection successful');
+		return true;
 	} catch (e) {
 		console.error('Supabase connection check failed:', e);
 		return false;

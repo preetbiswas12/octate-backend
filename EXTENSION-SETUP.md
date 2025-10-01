@@ -3,6 +3,7 @@
 ## Option 1: Separate Extension Package (Recommended)
 
 ### Step 1: Create Extension Structure
+
 ```bash
 # From your vscode root directory
 mkdir octate-collaboration-extension
@@ -13,6 +14,7 @@ npm init -y
 ```
 
 ### Step 2: Create Extension Manifest (package.json)
+
 ```json
 {
   "name": "octate-collaboration",
@@ -74,6 +76,7 @@ npm init -y
 ```
 
 ### Step 3: Create Extension Entry Point (extension.ts)
+
 ```typescript
 import * as vscode from 'vscode';
 
@@ -155,6 +158,7 @@ export function deactivate() {
 ```
 
 ### Step 4: Compile and Package
+
 ```bash
 # Compile TypeScript
 npm run compile
@@ -167,6 +171,7 @@ vsce package
 ```
 
 ### Step 5: Install Extension
+
 ```bash
 # Install in VS Code
 code --install-extension octate-collaboration-1.0.0.vsix
