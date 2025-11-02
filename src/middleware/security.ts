@@ -73,42 +73,42 @@ export const corsOptions = {
 export const securityHeaders = (req: Request, res: Response, next: NextFunction) => {
 	// Prevent clickjacking
 	res.setHeader('X-Frame-Options', 'DENY');
-	
+
 	// Prevent MIME type sniffing
 	res.setHeader('X-Content-Type-Options', 'nosniff');
-	
+
 	// Enable XSS protection
 	res.setHeader('X-XSS-Protection', '1; mode=block');
-	
+
 	// Enforce HTTPS in production
 	if (process.env.NODE_ENV === 'production') {
 		res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 	}
-	
+
 	// Prevent information disclosure
 	res.removeHeader('X-Powered-By');
-	
+
 	next();
 };
 
 // Request validation
 export const validateRequestSize = (req: Request, res: Response, next: NextFunction) => {
 	const maxSize = parseInt(process.env.MAX_REQUEST_SIZE?.replace('mb', '') || '10') * 1024 * 1024;
-	
+
 	if (req.headers['content-length'] && parseInt(req.headers['content-length']) > maxSize) {
 		return res.status(413).json({
 			error: 'Request too large',
 			maxSize: `${maxSize / 1024 / 1024}MB`
 		});
 	}
-	
+
 	next();
 };
 
 // Request logging for production
 export const requestLogger = (req: Request, res: Response, next: NextFunction) => {
 	const start = Date.now();
-	
+
 	res.on('finish', () => {
 		const duration = Date.now() - start;
 		const logData = {
@@ -120,13 +120,13 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction) =
 			userAgent: req.get('User-Agent'),
 			timestamp: new Date().toISOString()
 		};
-		
+
 		if (process.env.NODE_ENV === 'production') {
 			console.log(JSON.stringify(logData));
 		} else {
 			console.log(`${req.method} ${req.url} - ${res.statusCode} - ${duration}ms`);
 		}
 	});
-	
+
 	next();
 };

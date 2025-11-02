@@ -37,11 +37,11 @@ cat > /tmp/ssl-challenge.conf << EOF
 server {
     listen 80;
     server_name $DOMAIN www.$DOMAIN;
-    
+
     location /.well-known/acme-challenge/ {
         root $WEBROOT;
     }
-    
+
     location / {
         return 301 https://\$server_name\$request_uri;
     }
@@ -98,14 +98,14 @@ echo "$(date): Starting certificate renewal check" >> $LOG_FILE
 # Renew certificates
 if certbot renew --quiet --webroot --webroot-path=/opt/octate-backend/ssl-webroot; then
     echo "$(date): Certificate renewal successful" >> $LOG_FILE
-    
+
     # Copy renewed certificates
     cp /etc/letsencrypt/live/$DOMAIN/fullchain.pem /opt/octate-backend/ssl/$DOMAIN.crt
     cp /etc/letsencrypt/live/$DOMAIN/privkey.pem /opt/octate-backend/ssl/$DOMAIN.key
-    
+
     # Restart nginx
     docker-compose -f /opt/octate-backend/docker-compose.prod.yml restart nginx
-    
+
     echo "$(date): Nginx restarted with new certificates" >> $LOG_FILE
 else
     echo "$(date): Certificate renewal failed" >> $LOG_FILE

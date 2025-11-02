@@ -218,16 +218,16 @@ class WebhookHandler(BaseHTTPRequestHandler):
         if self.path == '/webhook':
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
-            
+
             # Verify signature
             signature = self.headers.get('X-Hub-Signature-256', '')
             expected_signature = 'sha256=' + hmac.new(
                 WEBHOOK_SECRET.encode(), post_data, hashlib.sha256
             ).hexdigest()
-            
+
             if hmac.compare_digest(signature, expected_signature):
                 payload = json.loads(post_data.decode())
-                
+
                 # Only deploy on push to main branch
                 if payload.get('ref') == 'refs/heads/main':
                     try:

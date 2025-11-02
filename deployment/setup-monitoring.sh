@@ -73,7 +73,7 @@ if [ ! -z "$CERT_EXPIRY" ]; then
     EXPIRY_TIMESTAMP=$(date -d "$CERT_EXPIRY" +%s)
     CURRENT_TIMESTAMP=$(date +%s)
     DAYS_UNTIL_EXPIRY=$(( (EXPIRY_TIMESTAMP - CURRENT_TIMESTAMP) / 86400 ))
-    
+
     if [ $DAYS_UNTIL_EXPIRY -lt 30 ]; then
         log "WARNING: SSL certificate expires in $DAYS_UNTIL_EXPIRY days"
     fi
@@ -268,11 +268,11 @@ echo "[$TIMESTAMP] ALERT [$ALERT_TYPE]: $MESSAGE" >> /var/log/octate/alerts.log
 
 # Send email (configure with your SMTP settings)
 # echo "Subject: Octate Backend Alert - $ALERT_TYPE
-# 
+#
 # Time: $TIMESTAMP
 # Alert: $ALERT_TYPE
 # Message: $MESSAGE
-# 
+#
 # Server: $(hostname)
 # " | sendmail your-email@example.com
 
