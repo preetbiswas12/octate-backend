@@ -142,7 +142,7 @@ CREATE POLICY "Allow all operations on cursors" ON cursors FOR ALL USING (true);
 CREATE POLICY "Allow all operations on presence" ON presence FOR ALL USING (true);
 
 -- Create a test room to verify everything works
-INSERT INTO rooms (name, description, allow_anonymous) 
+INSERT INTO rooms (name, description, allow_anonymous)
 VALUES ('Welcome Room', 'Default collaboration room for testing', true)
 ON CONFLICT DO NOTHING;
 

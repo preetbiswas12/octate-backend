@@ -151,7 +151,7 @@ const PORT = process.env.PORT || 3000;
 async function startServer() {
 	console.log(`🚀 Starting Octate collaboration backend...`);
 	console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
-	
+
 	// Check database connection on startup
 	const dbConnected = await checkSupabaseConnection();
 	if (!dbConnected) {
@@ -160,11 +160,11 @@ async function startServer() {
 		console.error(`   SUPABASE_URL: ${process.env.SUPABASE_URL ? '✅ Set' : '❌ Missing'}`);
 		console.error(`   SUPABASE_ANON_KEY: ${process.env.SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing'}`);
 		console.error(`   SUPABASE_SERVICE_ROLE_KEY: ${process.env.SUPABASE_SERVICE_ROLE_KEY ? '✅ Set' : '❌ Missing'}`);
-		
+
 		console.log('⚠️  Server will start but database features will not work');
 	} else {
 		console.log('✅ Supabase database connection verified');
-		
+
 		// Initialize database schema
 		const dbInitialized = await initializeDatabase();
 		if (!dbInitialized) {
@@ -172,7 +172,7 @@ async function startServer() {
 			console.log('⚠️  Server will start but some features may not work properly');
 		}
 	}
-	
+
 	server.listen(PORT, () => {
 		console.log(`🚀 Octate collaboration backend running on port ${PORT}`);
 		console.log(`📡 WebSocket server ready for real-time collaboration`);

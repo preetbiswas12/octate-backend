@@ -113,13 +113,13 @@ export class SupabaseError extends Error {
 export async function checkSupabaseConnection(): Promise<boolean> {
 	try {
 		console.log('Testing Supabase connection to:', supabaseUrl);
-		
+
 		// First check if environment variables are set
 		if (!supabaseUrl || !supabaseAnonKey) {
 			console.error('Missing Supabase environment variables');
 			return false;
 		}
-		
+
 		// Try a simple query to test connection
 		const { data, error } = await supabase
 			.from('rooms')
@@ -130,7 +130,7 @@ export async function checkSupabaseConnection(): Promise<boolean> {
 			console.error('Supabase query error:', error.message, error.details, error.hint);
 			return false;
 		}
-		
+
 		console.log('Supabase connection successful');
 		return true;
 	} catch (e) {
