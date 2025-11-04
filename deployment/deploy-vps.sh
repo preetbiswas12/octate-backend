@@ -6,7 +6,7 @@
 set -e
 
 # Configuration (UPDATE THESE VALUES)
-DOMAIN="your-domain.com"
+DOMAIN="octate.qzz.io"
 EMAIL="your-email@example.com"
 GITHUB_REPO="https://github.com/yourusername/octate-backend.git"
 BRANCH="main"

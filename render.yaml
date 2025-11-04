@@ -13,7 +13,7 @@ services:
           name: octate-collaboration-backend
           property: port
       - key: FRONTEND_URL
-        value: https://octate.dev
+        value: https://octate.qzz.io
       - key: SUPABASE_URL
         value: https://diijislhtmsbtvwecfdr.supabase.co
       - key: SUPABASE_ANON_KEY
@@ -24,4 +24,4 @@ services:
         value: octate-super-secret-jwt-key-for-production-use-32-chars-minimum
     healthCheckPath: /health
     domains:
-      - octate-backend.onrender.com
+      - octate.qzz.io

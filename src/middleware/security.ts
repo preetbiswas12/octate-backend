@@ -52,8 +52,8 @@ export const corsOptions = {
 		if (!origin) return callback(null, true);
 
 		const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || [
-			'https://octate.dev',
-			'https://www.octate.dev',
+			'https://octate.qzz.io',
+			'https://www.octate.qzz.io',
 			'http://localhost:3000',
 			'http://localhost:3001'
 		];

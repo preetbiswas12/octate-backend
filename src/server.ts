@@ -16,7 +16,7 @@ const server = createServer(app);
 // Socket.IO setup with CORS
 const io = new Server(server, {
 	cors: {
-		origin: process.env.FRONTEND_URL || "*",
+		origin: process.env.CORS_ORIGIN?.split(',') || ["https://octate.qzz.io", "https://www.octate.qzz.io"],
 		methods: ["GET", "POST"],
 		credentials: true
 	},
@@ -36,7 +36,7 @@ app.use(helmet({
 }));
 
 app.use(cors({
-	origin: process.env.FRONTEND_URL || "*",
+	origin: process.env.CORS_ORIGIN?.split(',') || ["https://octate.qzz.io", "https://www.octate.qzz.io"],
 	credentials: true
 }));
 
@@ -178,7 +178,7 @@ async function startServer() {
 		console.log(`📡 WebSocket server ready for real-time collaboration`);
 		console.log(`🔗 Health check: http://localhost:${PORT}/health`);
 		if (process.env.NODE_ENV === 'production') {
-			console.log(`🌐 Production URL: https://octate-backend.onrender.com`);
+			console.log(`🌐 Production URL: https://octate.qzz.io`);
 		}
 	});
 }

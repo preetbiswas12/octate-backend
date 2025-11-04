@@ -6,7 +6,7 @@
 set -e
 
 # Configuration
-DOMAIN="your-domain.com"
+DOMAIN="octate.qzz.io"
 EMAIL="your-email@example.com"
 WEBROOT="/opt/octate-backend/ssl-webroot"
 
@@ -90,7 +90,7 @@ echo "🔄 Setting up automatic renewal..."
 cat > /opt/octate-backend/scripts/renew-ssl.sh << 'EOF'
 #!/bin/bash
 
-DOMAIN="your-domain.com"
+DOMAIN="octate.qzz.io"
 LOG_FILE="/var/log/certbot-renewal.log"
 
 echo "$(date): Starting certificate renewal check" >> $LOG_FILE
@@ -116,7 +116,7 @@ EOF
 chmod +x /opt/octate-backend/scripts/renew-ssl.sh
 
 # Update domain in renewal script
-sed -i "s/your-domain.com/$DOMAIN/g" /opt/octate-backend/scripts/renew-ssl.sh
+sed -i "s/octate.qzz.io/$DOMAIN/g" /opt/octate-backend/scripts/renew-ssl.sh
 
 # Add cron job for automatic renewal (twice daily)
 (crontab -l 2>/dev/null; echo "0 2,14 * * * /opt/octate-backend/scripts/renew-ssl.sh") | crontab -

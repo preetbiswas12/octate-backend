@@ -10,10 +10,10 @@ max_rows = 1000
 
 [auth]
 enabled = true
-site_url = "https://octate.dev"
+site_url = "https://octate.qzz.io"
 additional_redirect_urls = [
-  "https://octate.dev/auth/callback",
-  "https://octate-backend.onrender.com/auth/callback"
+  "https://octate.qzz.io/auth/callback",
+  "https://www.octate.qzz.io/auth/callback"
 ]
 jwt_expiry = 3600
 enable_refresh_token_rotation = true

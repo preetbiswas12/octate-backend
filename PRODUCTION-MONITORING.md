@@ -1,7 +1,8 @@
 # Production Monitoring & Health Checks
 
 ## Health Check Endpoints
-- **Primary**: https://octate-backend.onrender.com/health
+
+- **Primary**: https://octate.qzz.io/health
 - **Fallback**: https://octate-collaboration.vercel.app/health
 
 ## Monitoring Setup
