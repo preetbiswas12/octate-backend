@@ -54,7 +54,7 @@ app.get('/health', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.json({ message: 'OctateIDE Collaboration Backend is running on https://octate.qzz.io 🚀' });
+  res.json({ message: 'OctateIDE Collaboration Backend is running and its health can be tracked on https://octate.qzz.io/health 🚀' });
 });
 
 
