@@ -53,6 +53,11 @@ app.get('/health', async (req, res) => {
 	});
 });
 
+app.get('/', (req, res) => {
+  res.json({ message: 'OctateIDE Collaboration Backend is running on https://octate.qzz.io 🚀' });
+});
+
+
 // Import and use routes
 import roomsRouter from './routes/rooms.js';
 import documentsRouter from './routes/documents.js';

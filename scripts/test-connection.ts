@@ -58,7 +58,7 @@ async function testConnection() {
 	if (process.env.NODE_ENV === 'production') {
 		console.log('🌐 Testing production backend...');
 		try {
-			const response = await fetch('https://octate-backend.onrender.com/health');
+			const response = await fetch('https://octate.qzz.io/health');
 			const data = await response.json();
 
 			console.log('✅ Production backend response:', data);
