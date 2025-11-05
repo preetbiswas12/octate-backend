@@ -7,7 +7,7 @@
 - `.env.production` - Updated FRONTEND_URL and CORS_ORIGIN
 - `docker-compose.prod.yml` - Added fallback defaults for octate.qzz.io
 
-### ✅ Deployment Configuration  
+### ✅ Deployment Configuration
 - `render.yaml` - Updated FRONTEND_URL and domain
 - `nginx/conf.d/octate.conf` - Updated server_name and SSL certificate paths
 - `supabase/config-production.toml` - Updated site_url and redirect URLs
@@ -44,7 +44,7 @@ Update redirect URIs in your OAuth applications:
 **GitHub OAuth App:**
 - Authorization callback URL: `https://diijislhtmsbtvwecfdr.supabase.co/auth/v1/callback`
 
-**Google OAuth App:**  
+**Google OAuth App:**
 - Authorized redirect URIs: `https://diijislhtmsbtvwecfdr.supabase.co/auth/v1/callback`
 
 **Microsoft OAuth App:**

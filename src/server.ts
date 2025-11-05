@@ -1,3 +1,7 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -16,8 +20,8 @@ const server = createServer(app);
 // Socket.IO setup with CORS
 const io = new Server(server, {
 	cors: {
-		origin: process.env.CORS_ORIGIN?.split(',') || ["https://octate.qzz.io", "https://www.octate.qzz.io"],
-		methods: ["GET", "POST"],
+		origin: process.env.CORS_ORIGIN?.split(',') || ['https://octate.qzz.io', 'https://www.octate.qzz.io'],
+		methods: ['GET', 'POST'],
 		credentials: true
 	},
 	transports: ['websocket', 'polling']
@@ -27,16 +31,16 @@ const io = new Server(server, {
 app.use(helmet({
 	contentSecurityPolicy: {
 		directives: {
-			defaultSrc: ["'self'"],
-			styleSrc: ["'self'", "'unsafe-inline'"],
-			scriptSrc: ["'self'"],
-			imgSrc: ["'self'", "data:", "https:"],
+			defaultSrc: ['self'],
+			styleSrc: ['self', 'unsafe-inline'],
+			scriptSrc: ['self'],
+			imgSrc: ['self', 'data:', 'https:'],
 		},
 	},
 }));
 
 app.use(cors({
-	origin: process.env.CORS_ORIGIN?.split(',') || ["https://octate.qzz.io", "https://www.octate.qzz.io"],
+	origin: process.env.CORS_ORIGIN?.split(',') || ['https://octate.qzz.io', 'https://www.octate.qzz.io'],
 	credentials: true
 }));
 
@@ -52,11 +56,6 @@ app.get('/health', async (req, res) => {
 		database: dbConnected ? 'connected' : 'disconnected'
 	});
 });
-
-app.get('/', (req, res) => {
-  res.json({ message: 'OctateIDE Collaboration Backend is running and its health can be tracked on https://octate.qzz.io/health 🚀' });
-});
-
 
 // Import and use routes
 import roomsRouter from './routes/rooms.js';

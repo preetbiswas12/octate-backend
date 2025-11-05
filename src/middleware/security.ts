@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 import rateLimit from 'express-rate-limit';
 import { Request, Response, NextFunction } from 'express';
 
@@ -49,7 +54,7 @@ export const createWhitelistRateLimiter = (windowMs: number, max: number) => {
 export const corsOptions = {
 	origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
 		// Allow requests with no origin (like mobile apps or curl requests)
-		if (!origin) return callback(null, true);
+		if (!origin) { return callback(null, true); }
 
 		const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || [
 			'https://octate.qzz.io',

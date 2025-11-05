@@ -1,0 +1,65 @@
+# Prometheus Configuration for Octate Collaboration Backend
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "rules/*.yml"
+  - "alert_rules.yml"
+
+scrape_configs:
+  # Octate Backend Metrics
+  - job_name: 'octate-backend'
+    static_configs:
+      - targets: ['octate-backend:3000']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 10s
+
+  # Node.js Application Metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+
+  # Nginx Metrics
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:9113']
+    scrape_interval: 15s
+
+  # Redis Metrics (if using Redis)
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 15s
+
+  # Supabase Metrics (external)
+  - job_name: 'supabase'
+    static_configs:
+      - targets: ['diijislhtmsbtvwecfdr.supabase.co:443']
+    scheme: https
+    metrics_path: '/rest/v1/rpc/health_check'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    basic_auth:
+      username: 'supabase'
+      password: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpaWppc2xodG1zYnR2d2VjZmRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNTc5MzksImV4cCI6MjA3NDYzMzkzOX0.6hTg0iaLhp6Ig-FSkJVjQ6jPxoGzrOTr9pyvgyWngwc'
+
+  # External Health Check
+  - job_name: 'external-health'
+    static_configs:
+      - targets: ['octate.qzz.io:443']
+    scheme: https
+    metrics_path: '/health'
+    scrape_interval: 30s
+
+# Alert Manager Configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+# # Recording and Alerting Rules
+# # alert_rules.yml is included in the top-level `rule_files` list
+#   - "alert_rules.yml"
