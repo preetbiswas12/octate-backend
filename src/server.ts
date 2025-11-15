@@ -57,17 +57,7 @@ app.get('/health', async (req, res) => {
 	});
 });
 
-// Diagnostic endpoint (remove in production)
-app.get('/diagnostic', (req, res) => {
-	res.json({
-		environment: process.env.NODE_ENV,
-		hasSupabaseUrl: !!process.env.SUPABASE_URL,
-		hasAnonKey: !!process.env.SUPABASE_ANON_KEY,
-		hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-		corsOrigin: process.env.CORS_ORIGIN,
-		port: process.env.PORT
-	});
-});
+
 
 // Import and use routes
 import roomsRouter from './routes/rooms.js';
