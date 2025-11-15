@@ -113,6 +113,8 @@ export class SupabaseError extends Error {
 export async function checkSupabaseConnection(): Promise<boolean> {
 	try {
 		console.log('Testing Supabase connection to:', supabaseUrl);
+		console.log('Service role key available:', !!supabaseServiceRoleKey);
+		console.log('Admin client available:', !!supabaseAdmin);
 
 		// First check if environment variables are set
 		if (!supabaseUrl || !supabaseAnonKey) {
@@ -122,6 +124,7 @@ export async function checkSupabaseConnection(): Promise<boolean> {
 
 		// Use admin client for health check to bypass RLS policies
 		const client = supabaseAdmin || supabase;
+		console.log('Using client type:', supabaseAdmin ? 'admin' : 'regular');
 		
 		// Try a simple query to test connection
 		const { data, error } = await client
