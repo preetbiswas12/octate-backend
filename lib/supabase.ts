@@ -134,7 +134,7 @@ export async function checkSupabaseConnection(): Promise<boolean> {
 		}
 
 		console.log('Supabase client configuration invalid');
-		return true;
+		return false;
 	} catch (e) {
 		console.error('Supabase connection check failed:', e);
 		return false;
